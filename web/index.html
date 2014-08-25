@@ -1,0 +1,179 @@
+<html>
+<head>
+	<title>RfMesh Test Web</title>
+	<style>
+		#log{
+			height:500px;
+		}
+	</style>
+</head>
+<body>
+	<b>Main:</b></br>
+	Node Address:&nbsp;<input id="nodeAddress" size="4" value="2" /></br>
+	--------------------------------------------------</br>
+	<form id="discover">
+		<input type="submit" value="Discover">
+	</form>
+	<form id="discoverAll">
+		<input type="submit" value="Discover All">
+	</form>
+	<form id="reset">
+		<input type="submit" value="Reset">
+	</form>
+	<form id="update">
+		<input type="submit" value="Update">
+	</form>
+	<form id="checkForNewFirmware">
+		<input type="submit" value="Check For New Firmware">
+	</form>
+	--------------------------------------------------</br>
+	<b>Config:</b></br>
+	<form id="getConfig">
+		Config Type:&nbsp;<select id="configType">
+			<option value="0">header</option>
+			<option value="1">io</option>
+			<option value="2">network</option>
+			<option value="3">control</option>
+			<option value="4">parameter</option>
+			<option value="5">timer</option>
+		</select></br>
+		Config Index:&nbsp;<input id="configIndex" size="4" value="0" /></br>
+		<input type="submit" value="Get Config">
+	</form>
+	<form id="pushConfig">
+		<input type="submit" value="Push Config">
+	</form>
+	--------------------------------------------------</br>
+	<b>Mem:</b></br>
+	Mem Address:&nbsp;<input id="memAddress" size="4" value="0" /></br>
+	<form id="getMem">
+		<input type="submit" value="Get Mem">
+	</form>
+	<form id="setMem">
+		Mem Value:&nbsp;<input id="memValue" size="4" value="0" /></br>
+		<input type="submit" value="Set Mem">
+	</form></br>
+	--------------------------------------------------</br>
+	Data Logging Address:&nbsp;<input id="dataLoggingAddress" size="4" value="0" /></br>
+	<form id="dataLogging">
+		<input type="submit" value="Show Log">
+	</form>
+	--------------------------------------------------</br>
+	Log:</br>
+	<div id="log"></div>
+	
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		jQuery(function($){
+			var socket = io.connect();
+			// forms
+			var $getConfig = $('#getConfig');
+			var $pushConfig = $('#pushConfig');
+			var $getMem = $('#getMem');
+			var $setMem = $('#setMem');
+			var $discover = $('#discover');
+			var $discoverAll = $('#discoverAll');
+			var $reset = $('#reset');
+			var $update = $('#update');
+			var $dataLogging = $('#dataLogging');
+			var $checkForNewFirmware = $('#checkForNewFirmware');
+			// controls
+			var $nodeAddress = $('#nodeAddress');
+			var $configType = $('#configType');
+			var $configIndex = $('#configIndex');
+			var $memAddress = $('#memAddress');
+			var $memValue = $('#memValue');
+			var $dataLoggingAddress = $('#dataLoggingAddress');
+			var $log = $('#log');
+
+			$getConfig.submit(function(e){
+				e.preventDefault();
+				vals = {};
+				vals["nodeAddress"] = $nodeAddress.val();
+				vals["configType"] = $configType.val();
+				vals["configIndex"] = $configIndex.val();
+				socket.emit('getConfig', JSON.stringify(vals));
+			});
+
+			$pushConfig.submit(function(e){
+				e.preventDefault();
+				vals = {};
+				vals["nodeAddress"] = $nodeAddress.val();
+				socket.emit('pushConfig', JSON.stringify(vals));
+			});
+			
+			$getMem.submit(function(e){
+				e.preventDefault();
+				vals = {};
+				vals["nodeAddress"] = $nodeAddress.val();
+				vals["memAddress"] = $memAddress.val();
+				socket.emit('getMem', JSON.stringify(vals));
+			});
+
+			$setMem.submit(function(e){
+				e.preventDefault();
+				vals = {};
+				vals["nodeAddress"] = $nodeAddress.val();
+				vals["memAddress"] = $memAddress.val();
+				vals["memValue"] = $memValue.val();
+				socket.emit('setMem', JSON.stringify(vals));
+			});
+
+			$discover.submit(function(e){
+				e.preventDefault();
+				vals = {};
+				vals["nodeAddress"] = $nodeAddress.val();
+				socket.emit('discover', JSON.stringify(vals));
+			});
+
+			$discoverAll.submit(function(e){
+				e.preventDefault();
+				vals = {};
+				vals["nodeAddress"] = "65535";
+				socket.emit('discover', JSON.stringify(vals));
+			});
+
+			$reset.submit(function(e){
+				e.preventDefault();
+				vals = {};
+				vals["nodeAddress"] = $nodeAddress.val();
+				socket.emit('reset', JSON.stringify(vals));
+			});
+
+			$update.submit(function(e){
+				e.preventDefault();
+				vals = {};
+				vals["nodeAddress"] = $nodeAddress.val();
+				socket.emit('update', JSON.stringify(vals));
+			});
+
+			$dataLogging.submit(function(e){
+				e.preventDefault();
+				vals = {};
+				vals["dataLoggingAddress"] = $dataLoggingAddress.val();
+				socket.emit('dataLogging', JSON.stringify(vals));
+			});
+
+			$checkForNewFirmware.submit(function(e){
+				e.preventDefault();
+				vals = {};
+				vals["nodeAddress"] = $nodeAddress.val();
+				socket.emit('checkForNewFirmware', JSON.stringify(vals));
+			});
+			
+			socket.on('Log:DataLogging', function(data){
+				$log.append(JSON.stringify(data) + "<br/>");
+			});
+			
+			socket.on('Log:MeshMessageReceived', function(data){
+				$log.append(JSON.stringify(data) + "<br/>");
+			});
+			
+			socket.on('Log:MeshMessageTransmitted', function(data){
+				$log.append(JSON.stringify(data) + "<br/>");
+			});
+		});
+	</script>
+</body>
+</html>

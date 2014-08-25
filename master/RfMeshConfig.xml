@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<RfMeshConfig>
+	<Hardware Type="1" Version="1" Name="Master RPi">
+		<Firmware Version="1" HexFile="" />
+	</Hardware>
+	<Hardware Type="2" Version="1" Name="Prototyp">
+		<!--<Firmware Version="1" HexFile="BlinkTest.cpp.hex" />-->
+	</Hardware>
+	<Floor Name="Unbekannt">
+		<Room Name="Unbekannt">
+			<Node Name="Prototyp" Address="2" MacAddress="54:6F:53:61:00:01" HwType="2" HwVersion="1" FwVersion="0" />
+		</Room>
+	</Floor>
+	<Floor Name="Untergeschoss">
+		<Room Name="Flur" />
+		<Room Name="Hobbyraum" />
+		<Room Name="Waschkueche">
+			<Node Name="Master" Address="1" MacAddress="" HwType="1" HwVersion="1" FwVersion="1" />
+		</Room>
+		<Room Name="Keller" />
+	</Floor>
+	<Floor Name="Erdgeschoss">
+		<Room Name="Flur" />
+		<Room Name="Gaeste-WC" />
+		<Room Name="Wohnzimmer" />
+		<Room Name="Kueche" />
+	</Floor>
+	<Floor Name="Obergeschoss">
+		<Room Name="Flur" />
+		<Room Name="Florians Zimmer" />
+		<Room Name="Arbeitszimmer" />
+		<Room Name="Franziskas Zimmer" />
+		<Room Name="Kinder-Bad" />
+	</Floor>
+	<Floor Name="Dachgeschoss">
+		<Room Name="Flur" />
+		<Room Name="Schlafzimmer" />
+		<Room Name="Eltern-Bad" />
+	</Floor>
+	<Floor Name="Aussen">
+		<Room Name="Garten" />
+		<Room Name="Stellplatz" />
+		<Room Name="Vorgarten" />
+		<Room Name="Loggia" />
+		<Room Name="Garage" />
+	</Floor>
+</RfMeshConfig>
